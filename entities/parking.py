@@ -2,13 +2,13 @@ import uuid
 
 
 class Parking:
-    def __init__(self, nombre=None, plazas=None):
+    def __init__(self, nombre, lista_plazas=[]):
         self.__id = uuid.uuid4()
         self.__nombre = nombre
-        self.__plazas = plazas
+        self.__plazas = lista_plazas
 
     def __str__(self):
-        return f'El parking {self.__nombre} tiene {self.__plazas} plazas y su id es {self.__id}'
+        return f'El parking {self.__nombre} tiene {len(self.__plazas)} plazas y su id es {self.__id}'
 
     def __del__(self):
         print(f'El parking {self.__nombre} se ha borrado correctamente')
@@ -39,10 +39,9 @@ class Parking:
 
 
 # Prueba:
-
-p = Parking("Prueba", 100)
+lista_prueba = []
+p = Parking("Prueba", lista_prueba)
 p.nombre = "Triana"
-p.plazas = 100
 
 
 print(str(p))

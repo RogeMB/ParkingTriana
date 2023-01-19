@@ -1,43 +1,46 @@
-import uuid
-
-
 class Plaza:
-    contador = 0
-    seccion = ord("a")
+    __lista_usados = []
 
-    def __init__(self, disponible=True, cliente=None):
+    def __init__(self, tipo_vehiculo, cliente=None, disponible=True):
+
         self.__id = self.generar_id_plaza()
-        self.__disponible = disponible
+        self.__tipo_vehiculo = tipo_vehiculo
         self.__cliente = cliente
+        self.__disponible = disponible
 
     def __str__(self):
-        return f'La plaza {self.__id} está {self.know_disponibilidad()} plazas y su cliente es {self.__cliente}'
+        return f'La plaza {self.__id} para vehículos {self.__tipo_vehiculo} está {self.know_disponibilidad()} ' \
+               f'y su cliente es {self.__cliente}'
 
     def __del__(self):
         print(f'La plaza {self.__id} se ha borrado correctamente')
 
     def know_disponibilidad(self):
-        result = self.__disponible if "disponible" else "ocupada"
-        return result
+        if self.__disponible:
+            return "disponible"
+        else:
+            return "ocupada"
 
-    def generar_id_plaza(self):
-        value = 0
-        key = "A"
-
-        for i in range(self.contador, 10000):
-            value = i
+    @staticmethod
+    def generar_id_plaza():
+        key = None
+        lista_keys = (','.join(["A%d" % i for i in range(1, 301)])).split(",")
+        for i in range(0, len(lista_keys) + 1):
+            key = lista_keys[i]
             break
+        dict_keys = dict(zip(lista_keys, range(len(lista_keys))))
+        dict_keys = {v: k for k, v in dict_keys.items()}
 
-        for i in range(self.seccion, ord('z') + 1):
-            if self.contador <= 100:
-                key = i
-                break
-            else:
-                self.seccion = self.seccion + 1
-                key = self.seccion
+        if key not in Plaza.__lista_usados:
+            Plaza.__lista_usados.append(key)
+            return key
+        else:
+            for k, v in dict_keys.items():
+                k = k + 1
+                key = dict_keys.get(k)
+                return key
 
-        self.contador += 1
-        return str(key+value).upper()
+            return key
 
     @property  # getter
     def id(self):
@@ -47,13 +50,13 @@ class Plaza:
     def id(self, id):
         self.__id = id
 
-    @property  # getter
-    def disponible(self):
-        return self.__disponible
+    @property
+    def tipo_vehiculo(self):
+        return self.__tipo_vehiculo
 
-    @disponible.setter  # setter
-    def disponible(self, nombre):
-        self.__disponible = nombre.capitalize()
+    @tipo_vehiculo.setter
+    def tipo_vehiculo(self, tipo_vehiculo):
+        self.__tipo_vehiculo = tipo_vehiculo
 
     @property  # getter
     def cliente(self):
@@ -62,3 +65,18 @@ class Plaza:
     @cliente.setter  # setter
     def cliente(self, cliente):
         self.__cliente = cliente
+
+    @property  # getter
+    def disponible(self):
+        return self.__disponible
+
+    @disponible.setter  # setter
+    def disponible(self, disponible):
+        self.__disponible = disponible
+
+
+pl = Plaza()
+print(pl)
+pl2 = Plaza()
+pl2.disponible=False
+print(pl2)
