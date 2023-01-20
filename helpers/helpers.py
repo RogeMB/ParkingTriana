@@ -1,7 +1,10 @@
 import re
 import os
-import platform
 import random
+import platform
+
+import helpers
+from views import menus
 
 
 def limpiar_pantalla():
@@ -30,7 +33,7 @@ def validar_dni(dni, lista):
 matriculas_usadas = set()
 
 
-def generar_matricula():
+def lector_matricula():
     while True:
         matricula = ""
         for i in range(4):
@@ -42,3 +45,23 @@ def generar_matricula():
             matriculas_usadas.add(matricula)
             break
     return matricula
+
+
+def comprobar_password():
+    intentos = 3
+    password = 1234
+    fallo = True
+    while fallo:
+        print("Inserte la contraseña: ")
+        contra = int(leer_texto())
+        if contra != password:
+            intentos -= 1
+            print(f"Contraseña incorrecta, tienes {intentos} intentos")
+            if intentos == 0:
+                print("----->Volviendo al menú principal...")
+                return False
+        else:
+            print("¡Bienvenido admin!")
+            menus.menu_admin_principal()
+            return True
+

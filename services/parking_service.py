@@ -16,6 +16,7 @@ class ParkingService:
         else:
             park = Parking(nombre, plazas)
             ParkingService.parkings.append(park)
+            print(park)
         return ParkingService.parkings
 
     @staticmethod

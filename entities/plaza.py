@@ -27,19 +27,9 @@ class Plaza:
         lista_keys = (','.join(["A%d" % i for i in range(1, 301)])).split(",")
         for i in range(0, len(lista_keys) + 1):
             key = lista_keys[i]
-            break
-        dict_keys = dict(zip(lista_keys, range(len(lista_keys))))
-        dict_keys = {v: k for k, v in dict_keys.items()}
-
-        if key not in Plaza.__set_usados:
-            Plaza.__set_usados.add(key)
-            return key
-        else:
-            for k, v in dict_keys.items():
-                k = k + 1
-                key = dict_keys.get(k)
+            if key not in Plaza.__set_usados:
+                Plaza.__set_usados.add(key)
                 return key
-            return key
 
     @property  # getter
     def id(self):

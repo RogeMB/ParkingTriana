@@ -18,12 +18,9 @@ class PlazasService:
                 if 1 <= i < 21:
                     p = Plaza(TipoVehiculo.TURISMO)
                     PlazasService.plazas.append(p)
-                    break
                 elif 21 <= i < 28:
                     p = Plaza(TipoVehiculo.MOTOCICLETA)
                     PlazasService.plazas.append(p)
-                    break
-
                 else:
                     p = Plaza(TipoVehiculo.MOVILIDADREDUCIDA)
                     PlazasService.plazas.append(p)
@@ -40,7 +37,7 @@ class PlazasService:
             print("Fichero no encontrado. Creando fichero...")
         finally:
             fichero.close()
-            del fichero
+
 
     @staticmethod
     def mostrar():
