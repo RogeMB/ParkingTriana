@@ -36,14 +36,3 @@ class Parking:
     @plazas.setter  # setter
     def plazas(self, plazas):
         self.__plazas = plazas
-
-
-# Prueba:
-lista_prueba = []
-p = Parking("Prueba", lista_prueba)
-p.nombre = "Triana"
-
-
-print(str(p))
-print(p)
-del p

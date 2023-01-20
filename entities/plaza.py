@@ -1,5 +1,5 @@
 class Plaza:
-    __lista_usados = []
+    __set_usados = set()
 
     def __init__(self, tipo_vehiculo, cliente=None, disponible=True):
 
@@ -31,15 +31,14 @@ class Plaza:
         dict_keys = dict(zip(lista_keys, range(len(lista_keys))))
         dict_keys = {v: k for k, v in dict_keys.items()}
 
-        if key not in Plaza.__lista_usados:
-            Plaza.__lista_usados.append(key)
+        if key not in Plaza.__set_usados:
+            Plaza.__set_usados.add(key)
             return key
         else:
             for k, v in dict_keys.items():
                 k = k + 1
                 key = dict_keys.get(k)
                 return key
-
             return key
 
     @property  # getter
@@ -73,10 +72,3 @@ class Plaza:
     @disponible.setter  # setter
     def disponible(self, disponible):
         self.__disponible = disponible
-
-
-pl = Plaza()
-print(pl)
-pl2 = Plaza()
-pl2.disponible=False
-print(pl2)

@@ -10,35 +10,53 @@ class PlazasService:
 
     @staticmethod
     def crear_plazas():
-        if os.path.lexists("db/plazas.pckl") is False:
+        if os.path.lexists("../db/plazas.pckl") is False:
             PlazasService.cargar_plazas()
 
         else:
-
             for i in range(1, 31):
                 if 1 <= i < 21:
-                    p = Plaza(TipoVehiculo.TURISMO).generar_id_plaza()
+                    p = Plaza(TipoVehiculo.TURISMO)
                     PlazasService.plazas.append(p)
                     break
                 elif 21 <= i < 28:
-                    p2 = Plaza(TipoVehiculo.MOTOCICLETA).generar_id_plaza()
-                    PlazasService.plazas.append(p2)
+                    p = Plaza(TipoVehiculo.MOTOCICLETA)
+                    PlazasService.plazas.append(p)
                     break
 
                 else:
-                    p3 = Plaza(TipoVehiculo.MOVILIDADREDUCIDA).generar_id_plaza()
-                    PlazasService.plazas.append(p3)
+                    p = Plaza(TipoVehiculo.MOVILIDADREDUCIDA)
+                    PlazasService.plazas.append(p)
 
         return PlazasService.plazas
 
     @staticmethod
     def cargar_plazas():
         try:
-            if os.path.lexists("db/plazas.pckl"):
-                with open("db/plazas.pckl", "ab+") as fichero:
-                    PlazasService.plazas = pickle.load(fichero)
-                    fichero.seek(0)
-        except os.path.lexists("db/plazas.pckl") is False:
+            with open("../db/plazas.pckl", "ab+") as fichero:
+                PlazasService.plazas = pickle.load(fichero)
+                fichero.seek(0)
+        except:
             print("Fichero no encontrado. Creando fichero...")
         finally:
             fichero.close()
+            del fichero
+
+    @staticmethod
+    def mostrar():
+        if len(PlazasService.plazas) == 0:
+            print("El parking está vacío.")
+            return
+        for pl in PlazasService.plazas:
+            print(pl.__str__)
+
+    @staticmethod
+    def agregar(pl):
+        PlazasService.plazas.append(pl)
+        PlazasService.guardar()
+
+    @staticmethod
+    def guardar():
+        fichero = open('../db/plazas.pckl', 'wb')
+        pickle.dump(PlazasService.plazas, fichero)
+        fichero.close()

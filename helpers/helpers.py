@@ -1,6 +1,7 @@
 import re
 import os
 import platform
+import random
 
 
 def limpiar_pantalla():
@@ -24,3 +25,20 @@ def validar_dni(dni, lista):
             print("Este DNI ya está siendo utilizado.")
             return False
     return True
+
+
+matriculas_usadas = set()
+
+
+def generar_matricula():
+    while True:
+        matricula = ""
+        for i in range(4):
+            matricula += str(random.randint(0, 9))
+        matricula += "-"
+        for i in range(3):
+            matricula += chr(random.randint(65, 90))
+        if matricula not in matriculas_usadas:
+            matriculas_usadas.add(matricula)
+            break
+    return matricula
