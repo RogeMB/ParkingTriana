@@ -2,6 +2,7 @@ import os
 import time
 import pickle
 
+from entities.abonado import Abonado
 from services.parking_service import ParkingService
 from services.plaza_service import PlazasService
 from services.cliente_service import ClienteService
@@ -73,14 +74,59 @@ def iniciar():
             elif opcion == 2:
                 print(f"Hola {user}")
                 if helpers.comprobar_password():
-                    print("RRRRRRRRRRRR")
+                    salida_sub_admin = True
+                    while salida_sub_admin:
+                        try:
+                            print("Selecciona una opción: ")
+                            opcion_sub = int(helpers.leer_texto())
+
+                            if opcion_sub == 0:
+                                print("Volviendo al menú principal...")
+                                helpers.limpiar_pantalla()
+                                salida_sub_admin = False
+                                break
+                            elif opcion_sub == 1:  # consultar parking
+                                def calcular_libres():
+                                    plazas_libres = []
+                                    for pla in lista_plazas:
+                                        if pla.disponible:
+                                            plazas_libres.append(pla)
+                                        else:
+                                            pass
+                                    return len(plazas_libres)
+
+                                def calcular_ocupadas():
+                                    porcentaje_ocupadas = 100 - (calcular_libres()*100)/len(lista_plazas)
+                                    return porcentaje_ocupadas
+
+                                for plaza in lista_plazas:
+                                    print(f'***Parking Triana***"\n"'
+                                          f'{plaza.__str__()}')
+                                print(f'\nPLAZAS LIBRES: {calcular_libres()}\n'
+                                      f'PORCENTAJE OCUPADAS: {calcular_ocupadas()} %')
+
+                            elif opcion_sub == 3:  # consultar lista abonados
+                                clientes_abonados = [cliente for cliente in lista_clientes if isinstance(cliente, Abonado) and cliente.abonado]
+                                if len(clientes_abonados) > 0:
+                                    for abonado in clientes_abonados:
+                                        print(abonado.__str__())
+
+                                else:
+                                    print("La lista de abonados está vacía.")
+
+
+                            else:
+                                print("ERROR --> Por favor, seleccione una opción válida")
+
+                        except:
+                            print("ERROR --> Seleccione una número entero")
+
                 else:
                     pass
             else:
                 print("ERROR --> Por favor, seleccione una opción válida")
         except:
             print("ERROR --> Seleccione una número entero")
-
 
     print("***** GRACIAS, HASTA PRONTO *****")
 

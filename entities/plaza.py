@@ -1,3 +1,6 @@
+from entities.enums import tipo_vehiculo as tv
+
+
 class Plaza:
     __set_usados = set()
 
@@ -9,7 +12,7 @@ class Plaza:
         self.__disponible = disponible
 
     def __str__(self):
-        return f'La plaza {self.__id} para vehículos {self.__tipo_vehiculo} está {self.know_disponibilidad()} ' \
+        return f'La plaza {self.__id} para vehículos {self.know_tipo_vehiculo()} está {self.know_disponibilidad()} ' \
                f'y su cliente es {self.__cliente}'
 
     def __del__(self):
@@ -20,6 +23,14 @@ class Plaza:
             return "disponible"
         else:
             return "ocupada"
+
+    def know_tipo_vehiculo(self):
+        if self.__tipo_vehiculo == tv.TipoVehiculo.TURISMO:
+            return "TURISMO"
+        elif self.__tipo_vehiculo == tv.TipoVehiculo.MOTOCICLETA:
+            return "MOTO"
+        else:
+            return "MOVILIDAD REDUCIDA"
 
     @staticmethod
     def generar_id_plaza():

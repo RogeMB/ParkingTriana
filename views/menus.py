@@ -26,9 +26,10 @@ def menu_admin_principal():
     print("Seleccione una opción válida:")
     print("[0]. Atrás")
     print("[1]. Consultar estado del parking")
-    print("[2]. Consultar facturación abonados")
-    print("[3]. Gestión de abonados")
-    print("[4]. Consultar próximos vencimientos")
+    print("[2]. Consultar facturación entre fechas")
+    print("[3]. Consultar abonados")
+    print("[4]. Gestión de abonados")
+    print("[5]. Consultar próximos vencimientos")
     print("====================================")
 
 

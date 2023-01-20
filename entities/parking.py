@@ -8,7 +8,7 @@ class Parking:
         self.__plazas = lista_plazas
 
     def __str__(self):
-        return f'El parking {self.__nombre} tiene {len(self.__plazas)} plazas y su id es {self.__id}'
+        return f'El parking {self.__nombre} tiene {len(self.__plazas)} plazas.'
 
     def __del__(self):
         print(f'El parking {self.__nombre} se ha borrado correctamente')

@@ -1,10 +1,11 @@
 import uuid
 from entities.cliente import Cliente
+from entities.enums import tipo_abono as ta
 
 
 class Abonado(Cliente):
     def __init__(self, matricula, tipo_vehiculo, dni, nombre, apellidos, email, num_tarjeta, fecha_alta, fecha_baja,
-                 tipo_abono, pago, plaza_asignada):
+                 tipo_abono, facturacion, plaza_asignada):
         super().__init__(matricula=matricula, tipo_vehiculo=tipo_vehiculo)
 
         self.__id = uuid.uuid4()
@@ -16,11 +17,33 @@ class Abonado(Cliente):
         self.__fecha_alta = fecha_alta
         self.__fecha_baja = fecha_baja
         self.__tipo_abono = tipo_abono
-        self.__pago = pago
+        self.__facturacion = facturacion
         self.__plaza_asignada = plaza_asignada
+
+    def __str__(self):
+        return f'Dni: {self.__dni}' \
+               f'Nombre: {self.__nombre}' \
+               f'Apellidos: {self.__apellidos}' \
+               f'Email: {self.__email}' \
+               f'Núm. Tarjeta: {self.__num_tarjeta}' \
+               f'Fecha Alta: {self.__fecha_alta}' \
+               f'Fecha Baja: {self.__fecha_baja}' \
+               f'Tipo Abono: {self.know_tipo_abono()}' \
+               f'Facturación: {self.__facturacion}' \
+               f'Plaza Asignada: {self.__plaza_asignada}'
 
     def __del__(self):
         return f'Se ha eliminado el abonado {self.__dni} correctamente.'
+
+    def know_tipo_abono(self):
+        if self.__tipo_abono == ta.TipoAbono.ANUAL:
+            return "ANUAL"
+        elif self.__tipo_abono == ta.TipoAbono.SEMESTRAL:
+            return "SEMESTRAL"
+        elif self.__tipo_abono == ta.TipoAbono.TRIMESTRAL:
+            return "TRIMESTRAL"
+        else:
+            return "MENSUAL"
 
     @property
     def id(self):
@@ -97,11 +120,11 @@ class Abonado(Cliente):
 
     @property
     def pago(self):
-        return self.__pago
+        return self.__facturacion
 
     @pago.setter
-    def pago(self, pago):
-        self.__pago = pago
+    def pago(self, facturacion):
+        self.__facturacion = facturacion
 
     @property
     def plaza_asignada(self):
