@@ -11,7 +11,7 @@ class ParkingService:
 
     @staticmethod
     def crear_parking(nombre, plazas):
-        if os.path.lexists("../db/parkings.pckl") is False:
+        if os.path.lexists("db/parkings.pckl") is False:
             ParkingService.cargar_parking()
         else:
             park = Parking(nombre, plazas)
@@ -22,7 +22,7 @@ class ParkingService:
     @staticmethod
     def cargar_parking():
         try:
-            with open("../db/parkings.pckl", "ab+") as fichero:
+            with open("db/parkings.pckl", "ab+") as fichero:
                 ParkingService.parkings = pickle.load(fichero)
                 fichero.seek(0)
         except:
@@ -36,8 +36,8 @@ class ParkingService:
         if len(ParkingService.parkings) == 0:
             print("No hay ningún parking.")
             return
-        for pl in ParkingService.parkings:
-            print(pl.__str__)
+        for park in ParkingService.parkings:
+            print(park)
 
     @staticmethod
     def agregar(pl):
@@ -46,6 +46,6 @@ class ParkingService:
 
     @staticmethod
     def guardar():
-        fichero = open('../db/parkings.pckl', 'wb')
+        fichero = open('db/parkings.pckl', 'wb')
         pickle.dump(ParkingService.parkings, fichero)
         fichero.close()

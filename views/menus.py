@@ -1,7 +1,7 @@
 
 def menu_inicio():
     print("*************************************")
-    print(" -- Bienvenidos al Parking Triana -- ")
+    print("    -- Bienvenidos al Parking  --    ")
     print("*************************************")
     print("[0] Cerrar el programa ")
     print("[1] Entrar como cliente   ")

@@ -10,7 +10,7 @@ class PlazasService:
 
     @staticmethod
     def crear_plazas():
-        if os.path.lexists("../db/plazas.pckl") is False:
+        if os.path.lexists("db/plazas.pckl") is False:
             PlazasService.cargar_plazas()
 
         else:
@@ -30,7 +30,7 @@ class PlazasService:
     @staticmethod
     def cargar_plazas():
         try:
-            with open("../db/plazas.pckl", "ab+") as fichero:
+            with open("db/plazas.pckl", "ab+") as fichero:
                 PlazasService.plazas = pickle.load(fichero)
                 fichero.seek(0)
         except:
@@ -38,14 +38,13 @@ class PlazasService:
         finally:
             fichero.close()
 
-
     @staticmethod
     def mostrar():
         if len(PlazasService.plazas) == 0:
             print("El parking está vacío.")
             return
         for pl in PlazasService.plazas:
-            print(pl.__str__)
+            print(pl)
 
     @staticmethod
     def agregar(pl):
@@ -54,6 +53,6 @@ class PlazasService:
 
     @staticmethod
     def guardar():
-        fichero = open('../db/plazas.pckl', 'wb')
+        fichero = open('db/plazas.pckl', 'wb')
         pickle.dump(PlazasService.plazas, fichero)
         fichero.close()

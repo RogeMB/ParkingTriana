@@ -4,23 +4,25 @@ from datetime import datetime
 
 class Factura:
 
-    def __init__(self, matricula, plaza, fecha_entrada=datetime.now(), fecha_salida=None, pin_salida=None,
+    def __init__(self, matricula, plaza, pin_salida, fecha_entrada=datetime.now(), fecha_salida=None,
                  precio_total=None):
 
         self.__id = uuid.uuid4()
         self.__matricula = matricula
         self.__plaza = plaza
+        self.__pin_salida = pin_salida
         self.__fecha_entrada = fecha_entrada
         self.__fecha_salida = fecha_salida
-        self.__pin_salida = pin_salida
         self.__precio_total = precio_total
 
     def __str__(self):
         return f"==============TICKET DE SALIDA===============\n" \
-               f"MATRICULA: \t {self.matricula}\n" \
-               f"FECHA ENTRADA: \t\t {self.fecha_entrada}\n" \
-               f"PLAZA: \t\t {self.plaza.id}\n" \
-               f"PIN SALIDA: \t {self.pin_salida}\n" \
+               f"MATRICULA: \t {self.__matricula}\n" \
+               f"FECHA ENTRADA: \t {self.__fecha_entrada}\n" \
+               f"PLAZA: \t {self.__plaza.id}\n" \
+               f"PIN SALIDA: \t {self.__pin_salida}\n" \
+               f"FECHA SALIDA: \t {self.__fecha_salida}\n" \
+               f"PRECIO TOTAL: \t {self.__precio_total}\n" \
                f"=============================================\n" \
 
 

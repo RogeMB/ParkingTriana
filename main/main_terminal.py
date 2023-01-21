@@ -1,8 +1,9 @@
-import os
 import time
 import pickle
 
 from entities.abonado import Abonado
+from services.abonado_service import AbonadoService
+from services.factura_service import FacturaService
 from services.parking_service import ParkingService
 from services.plaza_service import PlazasService
 from services.cliente_service import ClienteService
@@ -19,9 +20,17 @@ parking_serv.crear_parking("Triana", plaza_serv.plazas)
 cliente_serv = ClienteService()
 cliente_serv.cargar_clientes()
 
+abonado_serv = AbonadoService()
+abonado_serv.cargar_abonados()
+
+facturas_serv = FacturaService()
+facturas_serv.cargar_facturas()
+
 lista_parkings = parking_serv.parkings
 lista_plazas = plaza_serv.plazas
 lista_clientes = cliente_serv.clientes
+lista_abonados = abonado_serv.abonados
+lista_facturas = facturas_serv.facturas
 
 
 def almacenar():
@@ -36,16 +45,24 @@ def almacenar():
                 contador = 302
                 salida = False
 
-    with open("../db/plazas.pckl", "wb") as fichero:
+    with open("db/plazas.pckl", "wb") as fichero:
         pickle.dump(lista_plazas, fichero)
         fichero.close()
         del fichero
-    with open("../db/parkings.pckl", "wb") as fichero:
+    with open("db/parkings.pckl", "wb") as fichero:
         pickle.dump(lista_parkings, fichero)
         fichero.close()
         del fichero
-    with open("../db/clientes.pckl", "wb") as fichero:
+    with open("db/clientes.pckl", "wb") as fichero:
         pickle.dump(lista_clientes, fichero)
+        fichero.close()
+        del fichero
+    with open("db/abonados.pckl", "wb") as fichero:
+        pickle.dump(lista_abonados, fichero)
+        fichero.close()
+        del fichero
+    with open("db/facturas.pckl", "wb") as fichero:
+        pickle.dump(lista_facturas, fichero)
         fichero.close()
         del fichero
 
@@ -99,11 +116,11 @@ def iniciar():
                                     porcentaje_ocupadas = 100 - (calcular_libres()*100)/len(lista_plazas)
                                     return porcentaje_ocupadas
 
-                                for plaza in lista_plazas:
-                                    print(f'***Parking Triana***"\n"'
-                                          f'{plaza.__str__()}')
+                                print(f'\t\t\t*****Parking {lista_parkings[0].nombre}*****"\n')
+                                plaza_serv.plazas = lista_plazas
+                                plaza_serv.mostrar()
                                 print(f'\nPLAZAS LIBRES: {calcular_libres()}\n'
-                                      f'PORCENTAJE OCUPADAS: {calcular_ocupadas()} %')
+                                      f'PORCENTAJE OCUPADAS: {calcular_ocupadas()} %\n')
 
                             elif opcion_sub == 3:  # consultar lista abonados
                                 clientes_abonados = [cliente for cliente in lista_clientes if isinstance(cliente, Abonado) and cliente.abonado]

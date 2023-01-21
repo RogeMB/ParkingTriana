@@ -10,7 +10,7 @@ class ClienteService:
 
     @staticmethod
     def crear_cliente(matricula, tipo_vehiculo, abonado):
-        if os.path.lexists("../db/clientes.pckl") is False:
+        if os.path.lexists("db/clientes.pckl") is False:
             ClienteService.cargar_clientes()
         else:
             cliente = Cliente(matricula, tipo_vehiculo, abonado)
@@ -21,7 +21,7 @@ class ClienteService:
     @staticmethod
     def cargar_clientes():
         try:
-            with open("../db/clientes.pckl", "ab+") as fichero:
+            with open("db/clientes.pckl", "ab+") as fichero:
                 ClienteService.clientes = pickle.load(fichero)
                 fichero.seek(0)
         except:
@@ -36,7 +36,7 @@ class ClienteService:
             print("No hay ningún cliente en la base de datos.")
             return
         for cl in ClienteService.clientes:
-            print(cl.__str__)
+            print(cl)
 
     @staticmethod
     def agregar(cl):
@@ -45,6 +45,6 @@ class ClienteService:
 
     @staticmethod
     def guardar():
-        fichero = open('../db/clientes.pckl', 'wb')
+        fichero = open('db/clientes.pckl', 'wb')
         pickle.dump(ClienteService.clientes, fichero)
         fichero.close()
