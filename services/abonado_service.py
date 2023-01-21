@@ -1,12 +1,12 @@
 import os.path
 import pickle
 from io import open
+import datetime
 
 from entities.abonado import Abonado
 
 
 class AbonadoService:
-
     abonados = []
 
     @staticmethod
@@ -51,3 +51,32 @@ class AbonadoService:
         fichero = open('db/abonados.pckl', 'wb')
         pickle.dump(AbonadoService.abonados, fichero)
         fichero.close()
+
+    @staticmethod
+    def comprobar_caducidad_mes(mes):
+        # Comprueba que el mes sea correcto y que sea igual o mayor al mes del año actual.
+        # También que la lista no esté vacía
+        dt = datetime.datetime.now()
+        if 1 <= mes <= 12 and dt.month <= mes:
+            if len(AbonadoService.abonados) > 0:
+                lista_proxima_caducidad_mes = list(
+                    filter(lambda abonado: abonado.fecha_baja.month == mes and abonado.fecha_baja.year == dt.year,
+                           AbonadoService.abonados))
+                return print(cad for cad in lista_proxima_caducidad_mes)
+            else:
+                return print("*** No hay ningún abonado que caduque en esa fecha *** \n ")
+        else:
+            return print("ERROR --> Fecha inválida")
+
+    @staticmethod
+    def comprobar_caducidad_dias():
+        # Comprueba qeu la lista no esté vacía y luego filtra para que la fecha de
+        # caducidad esté entre los próximos 10 días.
+        dt = datetime.datetime.now()
+        if len(AbonadoService.abonados) > 0:
+            lista_proxima_caducidad_dias = list(
+                filter(lambda abonado: dt.now() < abonado.fecha_baja < dt.now() + datetime.timedelta(days=10),
+                       AbonadoService.abonados))
+            return print(cad for cad in lista_proxima_caducidad_dias)
+        else:
+            return print("No hay ningún abonado que caduque en los próximos 10 días")

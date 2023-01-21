@@ -1,3 +1,4 @@
+import math
 import os.path
 import pickle
 from io import open
@@ -6,7 +7,6 @@ from entities.factura import Factura
 
 
 class FacturaService:
-
     facturas = []
 
     @staticmethod
@@ -49,3 +49,14 @@ class FacturaService:
         fichero = open('db/facturas.pckl', 'wb')
         pickle.dump(FacturaService.facturas, fichero)
         fichero.close()
+
+    @staticmethod
+    def calcular_ingresos(fecha_inicial, fecha_final):
+        # Calcula los ingresos de las facturas siempre que no sean None y que estén entre las fechas indicadas.
+        # Se ha comprobado previamente que las fechas sean válidas.
+        # Se filtra y se guarda to en una lista a la que se suma todos sus elementos y se redondea el resultado a 2 dec.
+        lista_ingresos = list(
+            filter(lambda factura: factura.precio_total is not None and fecha_inicial <= factura.fecha_entrada <= fecha_final, FacturaService.facturas))
+        result = math.fsum(lista_ingresos)
+        result = round(result, 2)
+        return result

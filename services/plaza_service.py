@@ -56,3 +56,20 @@ class PlazasService:
         fichero = open('db/plazas.pckl', 'wb')
         pickle.dump(PlazasService.plazas, fichero)
         fichero.close()
+
+    @staticmethod
+    def calcular_libres():
+        # calcula las plazas libres que hay
+        plazas_libres = []
+        for pla in PlazasService.plazas:
+            if pla.disponible:
+                plazas_libres.append(pla)
+            else:
+                pass
+        return len(plazas_libres)
+
+    @staticmethod
+    def calcular_ocupadas():
+        # calcula el porcentaje de ocupadas
+        porcentaje_ocupadas = 100 - (PlazasService.calcular_libres() * 100) / len(PlazasService.plazas)
+        return porcentaje_ocupadas

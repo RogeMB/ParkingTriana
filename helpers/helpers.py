@@ -62,6 +62,5 @@ def comprobar_password():
                 return False
         else:
             print("¡Bienvenido admin!")
-            menus.menu_admin_principal()
             return True
 

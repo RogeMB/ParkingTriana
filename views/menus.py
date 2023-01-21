@@ -33,6 +33,15 @@ def menu_admin_principal():
     print("====================================")
 
 
+def menu_admin_caducidad():
+    print("====================================")
+    print("Seleccione una opción válida:")
+    print("[0]. Atrás")
+    print("[1]. Caducidad según mes del año actual")
+    print("[2]. Caducidad en los próximos 10 días")
+    print("====================================")
+
+
 def menu_tipo_vehiculo():
     print("====================================")
     print("Seleccione su tipo de vehículo:")
