@@ -11,14 +11,13 @@ class AbonadoService:
 
     @staticmethod
     def crear_abonado(matricula, tipo_vehiculo, dni, nombre, apellidos, email, num_tarjeta, fecha_alta, fecha_baja,
-                      tipo_abono, facturacion, plaza_asignada):
+                      tipo_abono, facturacion, pin, plaza_asignada):
         if os.path.lexists("db/abonados.pckl") is False:
             AbonadoService.cargar_abonados()
         else:
             abonado = Abonado(matricula, tipo_vehiculo, dni, nombre, apellidos, email, num_tarjeta, fecha_alta,
-                              fecha_baja, tipo_abono, facturacion, plaza_asignada)
+                              fecha_baja, tipo_abono, facturacion, pin, plaza_asignada)
             AbonadoService.abonados.append(abonado)
-
         return AbonadoService.abonados
 
     @staticmethod
@@ -80,3 +79,11 @@ class AbonadoService:
             return print(cad for cad in lista_proxima_caducidad_dias)
         else:
             return print("No hay ningún abonado que caduque en los próximos 10 días")
+
+    @staticmethod
+    def buscar_dni(dni):
+        for abonado in AbonadoService.abonados:
+            if abonado.dni == dni:
+                return abonado
+            else:
+                return None

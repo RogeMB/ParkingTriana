@@ -3,6 +3,7 @@ import pickle
 import locale
 import datetime
 
+from entities.abonado import Abonado
 from services.abonado_service import AbonadoService
 from services.factura_service import FacturaService
 from services.parking_service import ParkingService
@@ -97,7 +98,41 @@ def iniciar():
 
             if opcion == 1:
                 helpers.limpiar_pantalla()
-                menus.menu_cliente_principal()
+                print(" * * * Zona Cliente * * * ")
+                salida_sub_cliente = True
+                time.sleep(1)
+                while salida_sub_cliente:
+                    try:
+                        helpers.limpiar_pantalla()
+                        menus.menu_cliente_principal()
+                        opcion_sub_cliente = int(helpers.leer_texto())
+                        print("Seleccione una opción: ")
+                        if opcion_sub_cliente == 0:
+                            print("Volviendo al menú principal...")
+                            helpers.limpiar_pantalla()
+                            salida_sub_cliente = False
+                            break
+                        elif opcion_sub_cliente == 1:  # consultar parking
+                            helpers.limpiar_pantalla()
+                            print(f'\t\t\t*****Parking {lista_parkings[0].nombre}*****"\n')
+                            plaza_serv.plazas = lista_plazas
+                            plaza_serv.mostrar()
+                            print(f'\nPLAZAS LIBRES: {PlazasService.calcular_libres()}\n'
+                                  f'PORCENTAJE OCUPADAS: {PlazasService.calcular_ocupadas()} %\n')
+                            print("\nPresiona ENTER para volver...")
+                            helpers.leer_texto()
+
+                        elif opcion_sub_cliente == 2:
+                            helpers.limpiar_pantalla()
+                            print("Aquí van operaciones de aparcamiento")
+
+                        elif opcion_sub_cliente == 3:
+                            helpers.limpiar_pantalla()
+                            print("Aquí van operaciones de salida")
+                        else:
+                            print("ERROR --> Seleccione una opción válida")
+                    except:
+                        print("ERROR --> Seleccione una número entero")
 
             elif opcion == 2:
                 helpers.limpiar_pantalla()
@@ -106,7 +141,7 @@ def iniciar():
                     salida_sub_admin = True
                     while salida_sub_admin:
                         try:
-                            time.sleep(2)
+                            time.sleep(1)
                             helpers.limpiar_pantalla()
                             menus.menu_admin_principal()
                             print("Seleccione una opción: ")
@@ -118,6 +153,7 @@ def iniciar():
                                 salida_sub_admin = False
                                 break
                             elif opcion_sub == 1:  # consultar parking
+                                helpers.limpiar_pantalla()
                                 print(f'\t\t\t*****Parking {lista_parkings[0].nombre}*****"\n')
                                 plaza_serv.plazas = lista_plazas
                                 plaza_serv.mostrar()
@@ -166,7 +202,7 @@ def iniciar():
                                         print(f'La suma total de ingresos entre las fechas indicadas es de: '
                                               f'{FacturaService.calcular_ingresos(fecha_inicial, fecha_final)} €')
 
-                                    print("\nPresiona Enter para volver...")
+                                    print("\nPresiona ENTER para volver...")
                                     helpers.leer_texto()
                                 except:
                                     print("ERROR --> Introduzca un formato de fecha válido.")
@@ -177,9 +213,90 @@ def iniciar():
                                 abonado_serv.mostrar()
                                 # Cada abonado tiene un atributo llamado facturación que se va actualizando cada vez
                                 # que realice un pago. Así, al imprimir los abonados también se imprimirá su facturación
-                                print("\nPresiona Enter para volver...")
+                                print("\nPresiona ENTER para volver...")
                                 helpers.leer_texto()
-                                
+
+                            elif opcion_sub == 4:  # alta, baja y modificación de abonados
+                                helpers.limpiar_pantalla()
+                                salida_ab = True
+                                while salida_ab:
+                                    try:
+                                        helpers.limpiar_pantalla()
+                                        menus.menu_gestion_abonado()
+                                        print("Seleccione una opción:")
+                                        opcion_abo = int(helpers.leer_texto())
+                                        if opcion_abo == 0:
+                                            salida_ab = False
+                                            print("Volviendo...")
+                                            break
+                                        elif opcion_abo == 1:  # Alta abonado
+                                            print("Introduzca el dni del abonado")
+                                            dni = helpers.leer_texto()
+                                            if helpers.validar_dni(dni, lista_abonados):
+                                                print("Válido. Introduzca ahora el nombre:")
+                                                nombre = helpers.leer_texto()
+                                                print("Válido. Introduzca ahora el apellido:")
+                                                apellido = helpers.leer_texto()
+                                                print("Válido. Introduzca ahora el email:")
+                                                email = helpers.leer_texto()
+                                                if helpers.validar_email(email, lista_abonados):
+                                                    print("Válido. Introduzca ahora un número de tarjeta:")
+                                                    num_tar = helpers.leer_texto()
+                                                    print("Válido. Introduzca ahora su matrícula (formato 1111-AAA):")
+                                                    matricula = helpers.leer_texto().upper()
+                                                    if helpers.validar_matricula(matricula, lista_abonados):
+                                                        print(
+                                                            "Válido. Introduzca un número del 1 al 3 según el siguiente menú:")
+                                                        menus.menu_tipo_vehiculo()
+                                                        tipo_v = int(helpers.leer_texto())
+                                                        tipo_v_elegido = helpers.elegir_tipo_vehiculo(tipo_v)
+                                                        print(
+                                                            "Válido. Introduzca un número del 1 al 4 según el siguiente menú:")
+                                                        menus.tipo_abono()
+                                                        tipo_abo = int(helpers.leer_texto())
+                                                        tipo_eleg = helpers.elegir_tipo_abono(tipo_abo)
+                                                        pago_eleg = helpers.elegir_pago(tipo_abo)
+                                                        print("Generando fechas...")
+                                                        time.sleep(1)
+                                                        fecha_alta = datetime.datetime.now()
+                                                        fecha_baja = datetime.datetime.now() + datetime.timedelta(
+                                                            days=30 * helpers.pasar_a_meses(tipo_abo))
+                                                        print("Generando pin...")
+                                                        pin = helpers.generador_pin_aleatorio()
+                                                        print(f'PIN: {pin}')
+                                                        print("Asignando plaza...")
+                                                        plaza = next(plaza for plaza in lista_plazas if
+                                                                     plaza.disponible and plaza.tipo_vehiculo == tipo_v_elegido)
+                                                        print(f'f:PLAZA: {plaza}')
+                                                        print("Creando abonado...")
+                                                        time.sleep(1)
+                                                        nuevo_abo = Abonado(matricula=matricula, tipo_vehiculo=tipo_v_elegido,
+                                                                tipo_abono=tipo_eleg, nombre=nombre, apellidos=apellido,
+                                                                email=email, num_tarjeta=num_tar, facturacion=pago_eleg,
+                                                                fecha_alta=fecha_alta, fecha_baja=fecha_baja, pin=pin,
+                                                                plaza_asignada=plaza, dni=dni)
+
+                                                        lista_abonados.append(nuevo_abo)
+
+                                                        helpers.limpiar_pantalla()
+                                                        print(
+                                                            "Abonado correctamente creado. Pulsa ENTER para continuar.")
+                                                        helpers.leer_texto()
+                                                        salida_ab = False
+                                                        break
+                                                    else:
+                                                        pass
+                                                else:
+                                                    pass
+                                            else:
+                                                salida_ab = False
+                                                print("Volviendo...")
+                                                break
+                                        else:
+                                            print("ERROR --> Por favor, seleccione una opción válida.")
+                                    except:
+                                        print("ERROR --> Por favor, seleccione un número entero.")
+
                             elif opcion_sub == 5:  # consulta abonos mes y 10 días
                                 helpers.limpiar_pantalla()
                                 salida_cad = True
@@ -190,6 +307,8 @@ def iniciar():
                                         opcion_cadu = int(helpers.leer_texto())
                                         if opcion_cadu == 0:
                                             salida_cad = False
+                                            print("Volviendo...")
+                                            break
                                         elif opcion_cadu == 1:
                                             print("Por favor, indique el mes que quiera consultar: ")
                                             mes = int(helpers.leer_texto())
@@ -226,3 +345,7 @@ almacen_thread = Thread(target=almacenar())
 
 main_thread.start()
 almacen_thread.start()
+
+
+def __call__(self, *args, **kwargs):
+    return self.cls(*args, **kwargs)

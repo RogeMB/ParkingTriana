@@ -5,7 +5,7 @@ from entities.enums import tipo_abono as ta
 
 class Abonado(Cliente):
     def __init__(self, matricula, tipo_vehiculo, dni, nombre, apellidos, email, num_tarjeta, fecha_alta, fecha_baja,
-                 tipo_abono, facturacion, plaza_asignada):
+                 tipo_abono, facturacion, pin, plaza_asignada):
         super().__init__(matricula=matricula, tipo_vehiculo=tipo_vehiculo)
 
         self.__id = uuid.uuid4()
@@ -18,6 +18,7 @@ class Abonado(Cliente):
         self.__fecha_baja = fecha_baja
         self.__tipo_abono = tipo_abono
         self.__facturacion = facturacion
+        self.__pin = pin
         self.__plaza_asignada = plaza_asignada
 
     def __str__(self):
@@ -30,6 +31,7 @@ class Abonado(Cliente):
                f'Fecha Baja: {self.__fecha_baja}' \
                f'Tipo Abono: {self.know_tipo_abono()}' \
                f'Facturación: {self.__facturacion}' \
+               f'Pin: {self.__pin}' \
                f'Plaza Asignada: {self.__plaza_asignada}'
 
     def __del__(self):
@@ -125,6 +127,14 @@ class Abonado(Cliente):
     @pago.setter
     def pago(self, facturacion):
         self.__facturacion = facturacion
+
+    @property
+    def pin(self):
+        return self.__pin
+
+    @pin.setter
+    def pin(self, pin):
+        self.__pin = pin
 
     @property
     def plaza_asignada(self):
