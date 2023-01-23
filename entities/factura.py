@@ -17,17 +17,23 @@ class Factura:
 
     def __str__(self):
         return f"==============TICKET DE SALIDA===============\n" \
-               f"MATRICULA: \t {self.__matricula}\n" \
-               f"FECHA ENTRADA: \t {self.__fecha_entrada}\n" \
-               f"PLAZA: \t {self.__plaza.id}\n" \
+               f"MATRICULA: \t\t {self.__matricula}\n" \
+               f'FECHA ENTRADA: \t {self.__fecha_entrada.strftime("%A %d de %B del %Y - %H:%M")}\n' \
+               f"PLAZA: \t\t\t {self.__plaza.id}\n" \
                f"PIN SALIDA: \t {self.__pin_salida}\n" \
-               f"FECHA SALIDA: \t {self.__fecha_salida}\n" \
-               f"PRECIO TOTAL: \t {self.__precio_total}\n" \
+               f'FECHA SALIDA: \t {self.imprimir_fecha_salida()}\n' \
+               f"PRECIO TOTAL: \t {self.__precio_total} €\n" \
                f"=============================================\n" \
 
 
     def __del__(self):
         return f'La factura {self.__id} se ha borrado correctamente.'
+
+    def imprimir_fecha_salida(self):
+        if self.__fecha_salida is not None:
+            return self.__fecha_salida.strftime("%A %d de %B del %Y - %H:%M")
+        else:
+            return self.__fecha_salida
 
     @property
     def id(self):

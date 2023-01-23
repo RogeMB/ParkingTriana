@@ -25,9 +25,18 @@ def validar_dni(dni, lista):
         return False
     for abonado in lista:
         if abonado.dni == dni:
-            print("Este DNI ya está siendo utilizado.")
             return False
     return True
+
+
+def validar_dni_edicion(dni, lista):
+    if not re.match('[0-9]{8}[A-Z]$', dni):
+        print("DNI incorrecto. Introduce bien el formato.")
+        return False
+    for abonado in lista:
+        if abonado.dni == dni:
+            return True
+    return False
 
 
 def validar_email(email, lista):
@@ -52,6 +61,15 @@ def validar_matricula(matricula, lista):
             print("Esta matrícula ya está siendo usada.")
             return False
     return True
+
+
+def validar_matricula_simple(matricula):
+    matricula_regex = re.compile(r'^[0-9]{4}-[A-Z]{3}$')
+    if not matricula_regex.match(matricula):
+        print("Formato no válido.")
+        return False
+    else:
+        return True
 
 
 def lector_automatico_matricula():
@@ -94,7 +112,7 @@ def elegir_tipo_abono(tipo_abo):
     return tipo_elegido
 
 
-def elegir_pago (tipo_abo):
+def elegir_pago(tipo_abo):
     if tipo_abo == 1:
         pago = 25
     elif tipo_abo == 2:

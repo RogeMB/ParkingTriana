@@ -6,6 +6,8 @@ if __name__ == "__main__":
         main_terminal.almacenar()
         main_terminal.iniciar()
 
+    # Contraseña ADMIN: 1234
+
     # else:
     #    app = ui.MainWindow()
     #    app.mainloop()

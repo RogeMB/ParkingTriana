@@ -72,4 +72,4 @@ class PlazasService:
     def calcular_ocupadas():
         # calcula el porcentaje de ocupadas
         porcentaje_ocupadas = 100 - (PlazasService.calcular_libres() * 100) / len(PlazasService.plazas)
-        return porcentaje_ocupadas
+        return round(porcentaje_ocupadas, 2)

@@ -1,22 +1,23 @@
+import copy
 import os.path
 import pickle
 from io import open
 import datetime
-
 from entities.abonado import Abonado
 
 
 class AbonadoService:
     abonados = []
+    lista_facturacion = []
 
     @staticmethod
     def crear_abonado(matricula, tipo_vehiculo, dni, nombre, apellidos, email, num_tarjeta, fecha_alta, fecha_baja,
                       tipo_abono, facturacion, pin, plaza_asignada):
-        if os.path.lexists("db/abonados.pckl") is False:
+        if os.path.lexists("db/abonados.pckl") is False and os.path.lexists("db/facturacion.pckl"):
             AbonadoService.cargar_abonados()
         else:
-            abonado = Abonado(matricula, tipo_vehiculo, dni, nombre, apellidos, email, num_tarjeta, fecha_alta,
-                              fecha_baja, tipo_abono, facturacion, pin, plaza_asignada)
+            abonado = Abonado(matricula, tipo_vehiculo, dni, nombre, apellidos, email, num_tarjeta, fecha_alta, fecha_baja,
+                              tipo_abono, facturacion, pin, plaza_asignada)
             AbonadoService.abonados.append(abonado)
         return AbonadoService.abonados
 
@@ -24,6 +25,9 @@ class AbonadoService:
     def cargar_abonados():
         try:
             with open("db/abonados.pckl", "ab+") as fichero:
+                AbonadoService.abonados = pickle.load(fichero)
+                fichero.seek(0)
+            with open("db/facturacion.pckl", "ab+") as fichero:
                 AbonadoService.abonados = pickle.load(fichero)
                 fichero.seek(0)
         except:
@@ -87,3 +91,48 @@ class AbonadoService:
                 return abonado
             else:
                 return None
+
+    @staticmethod
+    def buscar_matricula(matricula):
+        for abonado in AbonadoService.abonados:
+            if abonado.matricula == matricula:
+                return abonado
+            else:
+                return None
+
+    @staticmethod
+    def annadir_facturacion(abon):
+        nuevo = copy.copy(abon)
+        AbonadoService.lista_facturacion.append(nuevo)
+        AbonadoService.guardar_facturacion()
+
+    @staticmethod
+    def guardar_facturacion():
+        fichero = open('db/facturacion.pckl', 'wb')
+        pickle.dump(AbonadoService.abonados, fichero)
+        fichero.close()
+
+    @staticmethod
+    def mostrar_facturacion():
+        if len(AbonadoService.lista_facturacion) == 0:
+            print("No hay ningún registro en la base de datos.")
+            return
+        suma_de_pagos = []
+        for abonado in AbonadoService.lista_facturacion:
+            suma_de_pagos.append(abonado.pago)
+            print(f'{abonado}\n')
+        total = sum(suma_de_pagos)
+        total = round(total, 2)
+        print(f'SUMA TOTAL DE PAGOS: {total}€')
+
+    @staticmethod
+    def borrar(dni):
+        for indice, abonado in enumerate(AbonadoService.abonados):
+            if abonado.dni == dni and abonado.fecha_baja > datetime.datetime.now():
+                abonado = AbonadoService.abonados.pop(indice)
+                AbonadoService.guardar()
+                return abonado
+            else:
+                print("El abonado ya está dado de baja.")
+
+

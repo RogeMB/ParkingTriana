@@ -9,11 +9,11 @@ class ClienteService:
     clientes = []
 
     @staticmethod
-    def crear_cliente(matricula, tipo_vehiculo, abonado):
+    def crear_cliente(matricula, tipo_vehiculo):
         if os.path.lexists("db/clientes.pckl") is False:
             ClienteService.cargar_clientes()
         else:
-            cliente = Cliente(matricula, tipo_vehiculo, abonado)
+            cliente = Cliente(matricula, tipo_vehiculo)
             ClienteService.clientes.append(cliente)
 
         return ClienteService.clientes
@@ -48,3 +48,11 @@ class ClienteService:
         fichero = open('db/clientes.pckl', 'wb')
         pickle.dump(ClienteService.clientes, fichero)
         fichero.close()
+
+    @staticmethod
+    def buscar_matricula(matricula):
+        for abonado in ClienteService.clientes:
+            if abonado.matricula == matricula:
+                return abonado
+            else:
+                return None

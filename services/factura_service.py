@@ -60,3 +60,13 @@ class FacturaService:
         result = math.fsum(lista_ingresos)
         result = round(result, 2)
         return result
+
+    @staticmethod
+    def buscar_factura(plaza_salida, matricula_salida, pin_salida):
+        factura_salida = list(filter(lambda factura: factura.plaza.id == plaza_salida
+                              and factura.matricula == matricula_salida
+                              and factura.pin == pin_salida, FacturaService.facturas))
+        if len(factura_salida) > 0:
+            return factura_salida[0]
+        else:
+            return None

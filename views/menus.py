@@ -16,8 +16,6 @@ def menu_cliente_principal():
     print("[1]. Consultar plazas disponibles")
     print("[2]. Depositar un vehículo")
     print("[3]. Retirar un vehículo")
-    print("[4]. Depositar un vehículo abonado")
-    print("[5]. Retirar un vehículo abonado")
     print("====================================")
 
 

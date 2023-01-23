@@ -22,17 +22,17 @@ class Abonado(Cliente):
         self.__plaza_asignada = plaza_asignada
 
     def __str__(self):
-        return f'Dni: {self.__dni}' \
-               f'Nombre: {self.__nombre}' \
-               f'Apellidos: {self.__apellidos}' \
-               f'Email: {self.__email}' \
-               f'Núm. Tarjeta: {self.__num_tarjeta}' \
-               f'Fecha Alta: {self.__fecha_alta}' \
-               f'Fecha Baja: {self.__fecha_baja}' \
-               f'Tipo Abono: {self.know_tipo_abono()}' \
-               f'Facturación: {self.__facturacion}' \
-               f'Pin: {self.__pin}' \
-               f'Plaza Asignada: {self.__plaza_asignada}'
+        return f'Dni: {self.__dni}  ||  ' \
+               f'Nombre: {self.__nombre}  ||  ' \
+               f'Apellidos: {self.__apellidos}  ||  ' \
+               f'Email: {self.__email}  ||  ' \
+               f'Núm. Tarjeta: {self.__num_tarjeta}  ||  ' \
+               f'Fecha Alta: {self.__fecha_alta.strftime("%A %d de %B del %Y - %H:%M")}  ||  ' \
+               f'Fecha Baja: {self.__fecha_baja.strftime("%A %d de %B del %Y - %H:%M")}  ||  ' \
+               f'Tipo Abono: {self.know_tipo_abono()}  ||  ' \
+               f'Facturación: {self.__facturacion}  ||  ' \
+               f'Pin: {self.__pin}  ||  ' \
+               f'Plaza Asignada: {self.__plaza_asignada.id}  ||  '
 
     def __del__(self):
         return f'Se ha eliminado el abonado {self.__dni} correctamente.'
